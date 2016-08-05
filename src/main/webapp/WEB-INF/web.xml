@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+    <display-name></display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            <!--classpath:spring/configloader.xml -->
+            classpath:spring/processor.xml
+        </param-value>
+
+    </context-param>
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>
+            org.springframework.web.filter.CharacterEncodingFilter
+        </filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+
+    <!--工具接口-->
+    <servlet>
+        <servlet-name>UtilPosToBase62</servlet-name>
+        <servlet-class>com.weibo.datasys.servlet.UtilPosToBase62Servlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UtilPosToBase62</servlet-name>
+        <url-pattern>/util/pos_to_base62.json</url-pattern>
+    </servlet-mapping>
+
+    <!--版本-->
+    <servlet>
+        <servlet-name>Version</servlet-name>
+        <servlet-class>com.weibo.datasys.servlet.VersionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Version</servlet-name>
+        <url-pattern>/version.json</url-pattern>
+    </servlet-mapping>
+
+    <!--查询保险的详细信息-->
+    <servlet>
+        <servlet-name>QueryInsurance</servlet-name>
+        <servlet-class>org.huzhu.servlet.QueryInsuranceServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QueryInsurance</servlet-name>
+        <url-pattern>/insurance/insurancelist/get.json</url-pattern>
+    </servlet-mapping>
+
+    <!--查询加入互助的人数-->
+    <servlet>
+        <servlet-name>QueryMemberNum</servlet-name>
+        <servlet-class>org.huzhu.servlet.QueryMemberNumServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QueryMemberNum</servlet-name>
+        <url-pattern>/huzhu/member_num/get.json</url-pattern>
+    </servlet-mapping>
+
+    <!--发送验证码接口-->
+    <servlet>
+        <servlet-name>SendMsgAndInsert</servlet-name>
+        <servlet-class>org.huzhu.servlet.SendMsgAndInsertServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendMsgAndInsert</servlet-name>
+        <url-pattern>/huzhu/msg_insert/get.json</url-pattern>
+    </servlet-mapping>
+
+    <!--注册验证接口-->
+    <servlet>
+        <servlet-name>WeixinVerified</servlet-name>
+        <servlet-class>org.huzhu.servlet.WeixinVerifiedServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WeixinVerified</servlet-name>
+        <url-pattern>/huzhu/is_verified/get.json</url-pattern>
+    </servlet-mapping>
+
+    <!--是否注册接口-->
+    <servlet>
+        <servlet-name>QueryIsregistered</servlet-name>
+        <servlet-class>org.huzhu.servlet.QueryIsregisteredServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QueryIsregistered</servlet-name>
+        <url-pattern>/huzhu/is_register/get.json</url-pattern>
+    </servlet-mapping>
+
+     <!-- url-pattern中配置的/weixinCoreServlet用于指定该Servlet的访问路径 -->
+    <servlet>
+        <servlet-name>WeixinCoreSevlet</servlet-name>
+        <servlet-class>org.huzhu.servlet.WeixinCoreServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WeixinCoreSevlet</servlet-name>
+        <url-pattern>/weixin/weixin_core</url-pattern>
+    </servlet-mapping>
+
+     <!-- oauth2 -->
+    <servlet>
+        <servlet-name>OAuthServlet</servlet-name>
+        <servlet-class>org.huzhu.servlet.OAuthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OAuthServlet</servlet-name>
+        <url-pattern>/weixin/oauth</url-pattern>
+    </servlet-mapping>
+
+     <!-- 添加会员 -->
+    <servlet>
+        <servlet-name>WeixinAddMembersServlet</servlet-name>
+        <servlet-class>org.huzhu.servlet.WeixinAddMembersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WeixinAddMembersServlet</servlet-name>
+        <url-pattern>/weixin/member/add.json</url-pattern>nc
+    </servlet-mapping>
+
+    <!--保证access_token长期有效-->
+    <servlet>
+        <servlet-name>initServlet</servlet-name>
+        <servlet-class>org.huzhu.servlet.</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+</web-app>
