@@ -1,27 +1,29 @@
 package org.huzhu.servlet;
 
+import org.huzhu.weixin.thread.JsapiTicketThread;
 import org.huzhu.weixin.thread.TokenThread;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
 
 /**
- * 保证access_token长期有效
+ * 保证jsapi_ticket长期有效
  *
  * @author guobao
- * @date 2016-08-05
+ * @date 2016-08-07
  */
 
-public class InitServlet extends BaseServlet {
+public class JsapiTicketInitServlet extends BaseServlet {
     @Override
     public String readme() {
-        return "保证access_token长期有效\n" +
+        return "保证jsapi_ticket长期有效\n" +
                 "";
     }
 
     @Override
     public void init() {
-        // 启动定时获取access_token的线程
-        new Thread(new TokenThread()).start();
+        // 启动定时获取jsapi_ticket的线程
+        new Thread(new JsapiTicketThread()).start();
     }
 
     @Override

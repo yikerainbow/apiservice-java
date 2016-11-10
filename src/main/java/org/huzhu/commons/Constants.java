@@ -8,9 +8,9 @@ public class Constants {
 
     public static final long OP_DB_TIMEOUT = 500L;
 
-    public static final String appId = "wx8b4dc043d5bef4fd";
+    public static final String appId = "wxeb4e81f5354820f1";
 
-    public static final String appSecret = "8836bbb635efa124325ae690ea019136";
+    public static final String appSecret = "4dc5b1455d82b3959f571f6c59b0c2ce";
 
-    public static final int membershipFee = 9;
+    public static final int membershipFee = 1;
 }

@@ -3,7 +3,7 @@ package org.huzhu.result;
 import com.alibaba.fastjson.JSON;
 
 /**
- * Created by jihui2 on 2015/3/12.
+ * Created by guobao on 2015/3/12.
  */
 public class Result {
     public int code = 0;

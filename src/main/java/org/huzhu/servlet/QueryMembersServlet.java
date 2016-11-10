@@ -15,7 +15,7 @@ public class QueryMembersServlet extends BaseServlet {
     @Override
     public String readme() {
         return "查询保障人列表\n" +
-                "参数：openid, callBack\n" +
+                "参数：openid, callback\n" +
                 "";
     }
 

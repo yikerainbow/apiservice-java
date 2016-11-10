@@ -1,0 +1,31 @@
+[INFO ] 2016-11-07 17:28:11,120 org.huzhu.weixin.weixinpay.common.HttpService     - API POST DATA:
+  [INFO ] 2016-11-07 17:28:11,122 org.huzhu.weixin.weixinpay.common.HttpService     - <xml>
+  <appid>wxeb4e81f5354820f1</appid>
+  <mch_id>1400695002</mch_id>
+  <nonce_str>m7vbx3641ejuucg8pq83onhq6lvn5u2j</nonce_str>
+  <sign>2FC726885096CA1E162282E87C58C88E</sign>
+  <body>惠众互助</body>
+  <out_trade_no>1234</out_trade_no>
+  <total_fee>1</total_fee>
+  <spbill_create_ip>127.0.0.1</spbill_create_ip>
+  <notify_url>http://127.0.0.1:8180/tenpay_api_b2c/payNotifyUrl.jsp</notify_url>
+  <trade_type>JSAPI</trade_type>
+  <openid>o7GHswaI1107K2Ez2QblsQyztH5M</openid>
+</xml>
+  [INFO ] 2016-11-07 17:28:11,129 org.huzhu.weixin.weixinpay.common.HttpService     - executing requestPOST https://api.mch.weixin.qq.com/pay/unifiedorder HTTP/1.1
+  [INFO ] 2016-11-07 21:34:24,661 org.huzhu.weixin.weixinpay.common.HttpService     - API POST DATA:
+  [INFO ] 2016-11-07 21:34:24,662 org.huzhu.weixin.weixinpay.common.HttpService     - <xml>
+  <appid>wxeb4e81f5354820f1</appid>
+  <mch_id>1400695002</mch_id>
+  <nonce_str>uiaajwt1dot2hi59pzl8bmemc1q2a5kf</nonce_str>
+  <sign>B716AE10A961247D57ADA698F1F0256C</sign>
+  <body>惠众互助</body>
+  <out_trade_no>1234</out_trade_no>
+  <total_fee>1</total_fee>
+  <spbill_create_ip>127.0.0.1</spbill_create_ip>
+  <notify_url>http://127.0.0.1:8180/tenpay_api_b2c/payNotifyUrl.jsp</notify_url>
+  <trade_type>JSAPI</trade_type>
+  <openid>o7GHswaI1107K2Ez2QblsQyztH5M</openid>
+</xml>
+  [INFO ] 2016-11-07 21:34:24,671 org.huzhu.weixin.weixinpay.common.HttpService     - executing requestPOST https://api.mch.weixin.qq.com/pay/unifiedorder HTTP/1.1
+  

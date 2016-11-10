@@ -2,6 +2,7 @@ package org.huzhu.weixin.main;
 
 import org.huzhu.commons.Constants;
 import org.huzhu.weixin.proj.*;
+import org.huzhu.weixin.thread.TokenThread;
 import org.huzhu.weixin.util.WeixinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,17 +18,10 @@ public class MenuManager {
     private static Logger log = LoggerFactory.getLogger(MenuManager.class);
 
     public static void main(String[] args) {
-        // 第三方用户唯一凭证
-        String appId = Constants.appId;
-        // 第三方用户唯一凭证密钥
-        String appSecret = Constants.appSecret;
-
-        // 调用接口获取access_token
-        Token at = WeixinUtil.getAccessToken(appId, appSecret);
-
-        if (null != at) {
+        String accessToken = TokenThread.token.getAccessToken();
+        if (null != accessToken) {
             // 调用接口创建菜单
-            int result = WeixinUtil.createHuzhuMenu(getHuzhuMenu(), at.getAccessToken());
+            int result = WeixinUtil.createHuzhuMenu(getHuzhuMenu(), accessToken);
 
             // 判断菜单创建结果
             if (0 == result)

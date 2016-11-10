@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="baseDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass">
+            <value>com.mysql.jdbc.Driver</value>
+        </property>
+        <property name="minPoolSize">
+            <value>5</value>
+        </property>
+        <property name="maxPoolSize">
+            <value>30</value>
+        </property>
+        <property name="idleConnectionTestPeriod">
+            <value>20</value>
+        </property>
+        <property name="maxIdleTime">
+            <value>25</value>
+        </property>
+        <property name="breakAfterAcquireFailure">
+            <value>false</value>
+        </property>
+        <property name="checkoutTimeout">
+            <value>3000</value>
+        </property>
+        <property name="acquireRetryAttempts">
+            <value>50</value>
+        </property>
+        <property name="acquireRetryDelay">
+            <value>1000</value>
+        </property>
+    </bean>
+
+    <bean id="insuranceListJdbcTemplate" class="cn.sina.api.data.dao.util.JdbcTemplate">
+        <property name="dataSource">
+            <ref bean="insuranceListDataSource" />
+        </property>
+        <property name="dataSourceSlaves">
+            <list>
+                <ref bean="insuranceListDataSource" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="insuranceListDataSource" parent="baseDataSource">
+        <property name="jdbcUrl">
+            <value>jdbc:mysql://123.57.206.167:3306?useUnicode=true&amp;characterEncoding=UTF-8</value><!--${xxx}-->
+        </property>
+        <property name="user">
+            <value>root</value>
+        </property>
+        <property name="password">
+            <value>h15364</value>
+        </property>
+    </bean>
+
+    <bean id="insuranceListDao" class="org.huzhu.dao.InsuranceListDao">
+        <property name="jdbcTemplate" ref="insuranceListJdbcTemplate" />
+    </bean>
+
+    <bean id="insuranceListService" class="org.huzhu.service.InsuranceListService">
+        <property name="dao" ref="insuranceListDao" />
+    </bean>
+
+    <bean id="weixinListDao" class="org.huzhu.dao.WeixinListDao">
+        <property name="jdbcTemplate" ref="insuranceListJdbcTemplate" />
+    </bean>
+
+    <bean id="weixinListService" class="org.huzhu.service.WeixinListService">
+        <property name="dao" ref="weixinListDao" />
+    </bean>
+
+</beans>

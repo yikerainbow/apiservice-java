@@ -9,7 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class WeixinListServiceTest extends TestCase {
 
-    private boolean open = true;
+    private boolean open = false;
 
     public void test() { //把测试代码放在testAdd中
         if(open) {

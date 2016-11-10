@@ -35,8 +35,7 @@ public class MenuMain {
         //这里为请求接口的url+号后面的是token，这里就不做过多对token获取的方法解释
         String url="https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+"YJ2yZ40LPZYXPK7Ze6Pg-y59FYGCjcvAOJtMUgbd_k-BmoCIM7Bbz9Hs2G_0vR7-9onQWjv3VXnK46waJb7VX1JAWGvUqrRnlxHXtly1yaWJJG_Qvq_x42FVLmaE3fF8CEJdAJAMOT";
 
-        try{
-
+        try {
             //String ret = httpClient.post(url, map);
             //String rs= HttpUtils.sendPostBuffer(url, menujson.toJSONString());
             //System.out.println(rs);

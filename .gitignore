@@ -1,5 +1,4 @@
  maven
-target/
 
 # eclipse ignore
 .settings/
@@ -28,4 +27,7 @@ Thumbs.db
 
 # C/C++
 *.o
-logs
+
+# system ignore
+.logs/
+.target/

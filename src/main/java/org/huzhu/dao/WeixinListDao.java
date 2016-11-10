@@ -34,15 +34,15 @@ public class WeixinListDao {
     public static class Row {
         private String openid;
         private String nickname;
-        private String personName;
-        private String personId;
+        private String personname;
+        private String personid;
         private double balance;
         private String update;
-        public Row(String openid, String nickname, String personName, String personId, double balance, String update) {
+        public Row(String openid, String nickname, String personname, String personid, double balance, String update) {
             this.openid = openid;
             this.nickname = nickname;
-            this.personName = personName;
-            this.personId = personId;
+            this.personname = personname;
+            this.personid = personid;
             this.balance = balance;
             this.update = update;
         }
@@ -53,11 +53,11 @@ public class WeixinListDao {
         public String getNickname() {
             return nickname;
         }
-        public String getPersonName() {
-            return personName;
+        public String getPersonname() {
+            return personname;
         }
-        public String getPersonId() {
-            return personId;
+        public String getPersonid() {
+            return personid;
         }
         public double getBalance() {
             return balance;
@@ -88,21 +88,21 @@ public class WeixinListDao {
     }
 
     public class MemberRow {
-        private String personName;
-        private String personId;
+        private String personname;
+        private String personid;
         private double balance;
         private String update;
-        public MemberRow(String personName, String personId, double balance, String update) {
-            this.personName = personName;
-            this.personId = personId;
+        public MemberRow(String personname, String personid, double balance, String update) {
+            this.personname = personname;
+            this.personid = personid;
             this.balance = balance;
             this.update = update;
         }
-        public String getPersonName() {
-            return personName;
+        public String getPersonname() {
+            return personname;
         }
-        public String getPersonId() {
-            return personId;
+        public String getPersonid() {
+            return personid;
         }
         public double getBalance() {
             return balance;

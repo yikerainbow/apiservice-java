@@ -1,4 +1,4 @@
-package com.weibo.datasys.service;
+package org.huzhu;
 
 import com.alibaba.fastjson.JSON;
 import org.huzhu.result.Result;

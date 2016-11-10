@@ -14,7 +14,7 @@ public class QueryMemberInfoServlet extends BaseServlet {
     @Override
     public String readme() {
         return "查询保障人信息\n" +
-                "参数：person_id, callBack\n" +
+                "参数：person_id, callback\n" +
                 "";
     }
 
@@ -28,7 +28,7 @@ public class QueryMemberInfoServlet extends BaseServlet {
 
     @Override
     public void process(HttpServletRequest request, PrintWriter pw) throws Exception{
-        String personId = Util.getParameterStringNotEmpty(request, "person_id");
+        String personId = Util.getParameterStringNotEmpty(request, "personid");
         String callBack = Util.getParameterStringNotEmpty(request, "callback");
 
         String result = JSON.toJSONString(new Result(weixinListService.getMemberInfo(personId)));

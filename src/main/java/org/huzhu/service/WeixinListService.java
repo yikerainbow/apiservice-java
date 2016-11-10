@@ -65,7 +65,7 @@ public class WeixinListService {
 
     public WeixinListDao.TotalNum getHuzhuMembers() {
         int eventNum = 0;
-        int huzhuMembers = dao.getMembers();
+        int huzhuMembers = 500 + dao.getMembers();
 
         return new WeixinListDao.TotalNum(huzhuMembers, eventNum);
     }

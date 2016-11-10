@@ -16,7 +16,11 @@ import javax.net.ssl.TrustManager;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
+import org.huzhu.commons.Constants;
+import org.huzhu.servlet.AccessTokenInitServlet;
+import org.huzhu.weixin.proj.JsapiTicket;
 import org.huzhu.weixin.proj.Token;
+import org.huzhu.weixin.thread.TokenThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +35,6 @@ public class CommonUtil {
 
     private static Logger log = LoggerFactory.getLogger(CommonUtil.class);
 
-    // 凭证获取（GET）
-    public final static String token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
     /**
      * 发送https请求
      *
@@ -94,6 +96,8 @@ public class CommonUtil {
         return jsonObject;
     }
 
+    // 凭证获取（GET）
+    public final static String token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
     /**
      * 获取接口访问凭证
      *
@@ -120,6 +124,35 @@ public class CommonUtil {
         }
         return token;
     }
+
+    /**
+     * 获取接口访问凭证
+     *
+     * @return
+     */
+    public static JsapiTicket getJsapiTicket() {
+        JsapiTicket jsapiTicket = null;
+
+        String accessToken = TokenThread.token.getAccessToken();
+        //String accessToken = "66SKXjySSyLlaDWXCbvIixzifkDEBkQ6h4ZsdOmKJDdfceMtWaXWy3yr4_9jAuMDpa-qnk3s1hHjEqKSvOQgPtVnuILG0AYjuOfnGfN7pxodmdRMoS4X2TibcLSSsQbZZJLjAIAISU";
+        String requestUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+ accessToken + "&type=jsapi";
+        //发起GET请求获取凭证
+        JSONObject jsonObject = httpsRequest(requestUrl, "GET", null);
+
+        if (null != jsonObject) {
+            try {
+                jsapiTicket= new JsapiTicket();
+                jsapiTicket.setTicket(jsonObject.getString("ticket"));
+                jsapiTicket.setExpiresIn(jsonObject.getInt("expires_in"));
+            } catch (JSONException e) {
+                jsapiTicket = null;
+                // 获取jsapi_ticket失败
+                log.error("获取jsapi_ticket失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
+            }
+        }
+        return jsapiTicket;
+    }
+
 
     /**
      * URL编码（utf-8）
@@ -156,5 +189,11 @@ public class CommonUtil {
         else if ("video/mpeg4".equals(contentType))
             fileExt = ".mp4";
         return fileExt;
+    }
+
+    public static void main(String[] args) {
+        JsapiTicket jsapiTicket = getJsapiTicket();
+        System.out.println("jsapiTicket.ticket: " + jsapiTicket.getTicket());
+        System.out.println("jsapiTicket.expires_in: " + jsapiTicket.getExpiresIn());
     }
 }

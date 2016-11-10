@@ -1,7 +1,7 @@
 package org.huzhu.result;
 
 /**
- * Created by wjh on 15/10/19.
+ * Created by guobao on 15/10/19.
  */
 public class DsException extends RuntimeException{
     private ExcepFactor excepFactor;

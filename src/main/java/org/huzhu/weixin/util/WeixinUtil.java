@@ -1,23 +1,30 @@
 package org.huzhu.weixin.util;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Formatter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
+import javax.servlet.http.HttpServletRequest;
 
+import cn.sina.api.commons.util.ApiLogger;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
+import org.huzhu.commons.Constants;
 import org.huzhu.weixin.proj.HuzhuMenu;
 import org.huzhu.weixin.proj.Menu;
 import org.huzhu.weixin.proj.Token;
+import org.huzhu.weixin.thread.TokenThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -176,4 +183,98 @@ public class WeixinUtil {
 
         return result;
     }
+
+
+    /**
+     * 分享链接后台支持
+     * ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+     */
+
+    /**
+     * 方法名：getWxConfig</br>
+     * 详述：获取微信的配置信息 </br>
+     * 开发人员：souvc  </br>
+     * 创建时间：2016-1-5  </br>
+     * @param requestUrl
+     * @return 说明返回值含义
+     */
+    public static Map<String, Object> getWxConfig(String requestUrl) {
+        Map<String, Object> ret = new HashMap<String, Object>();
+
+        String jsapi_ticket = CommonUtil.getJsapiTicket().getTicket();
+        String timestamp = Long.toString(System.currentTimeMillis() / 1000); // 必填，生成签名的时间戳
+        String nonceStr = UUID.randomUUID().toString(); // 必填，生成签名的随机串
+
+        String signature = "";
+        // 注意这里参数名必须全部小写，且必须有序
+        String sign = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + nonceStr+ "&timestamp=" + timestamp + "&url=" + requestUrl;
+        try {
+            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+            crypt.reset();
+            crypt.update(sign.getBytes("UTF-8"));
+            signature = byteToHex(crypt.digest());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        ret.put("appId", Constants.appId);
+        ret.put("timestamp", timestamp);
+        ret.put("nonceStr", nonceStr);
+        ret.put("signature", signature);
+        return ret;
+    }
+
+    /**
+     * 方法名：byteToHex</br>
+     * 详述：字符串加密辅助方法 </br>
+     * 开发人员：souvc  </br>
+     * 创建时间：2016-1-5  </br>
+     * @param hash
+     * @return 说明返回值含义
+     */
+    private static String byteToHex(final byte[] hash) {
+        Formatter formatter = new Formatter();
+        for (byte b : hash) {
+            formatter.format("%02x", b);
+        }
+        String result = formatter.toString();
+        formatter.close();
+        return result;
+
+    }
+
+    /**
+     * InputStream流转换成String字符串
+     *
+     * @param inStream InputStream流
+     * @param encoding 编码格式
+     * @return String字符串
+     */
+    public static String inputStream2String(InputStream inStream, String encoding) {
+        String result = null;
+
+        int _buffer_size = 1024;
+
+        try {
+            if (inStream != null) {
+                ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                byte[] tempBytes = new byte[_buffer_size];
+                int count = -1;
+                while ((count = inStream.read(tempBytes, 0, _buffer_size)) != -1) {
+                    outStream.write(tempBytes, 0, count);
+                }
+
+                tempBytes = null;
+                outStream.flush();
+                result = new String(outStream.toByteArray(), encoding);
+            }
+        } catch (Exception e) {
+            ApiLogger.error("微信回调数据异常: " + e);
+            result = null;
+        }
+
+        return result;
+    }
+
 }
