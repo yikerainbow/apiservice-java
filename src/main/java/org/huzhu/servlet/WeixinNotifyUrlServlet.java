@@ -20,6 +20,7 @@ public class WeixinNotifyUrlServlet extends HttpServlet {
         PrintWriter pw = null;
         try {
             is = req.getInputStream();
+            pw = resp.getWriter();
         } catch (Exception e) {
             ApiLogger.error("获取微信回调数据异常: ", e);
             pw.print(ret);

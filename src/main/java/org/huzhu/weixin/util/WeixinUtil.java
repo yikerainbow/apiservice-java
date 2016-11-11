@@ -5,10 +5,7 @@ import java.net.ConnectException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Formatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -24,7 +21,9 @@ import org.huzhu.commons.Constants;
 import org.huzhu.weixin.proj.HuzhuMenu;
 import org.huzhu.weixin.proj.Menu;
 import org.huzhu.weixin.proj.Token;
-import org.huzhu.weixin.thread.TokenThread;
+import org.huzhu.weixin.thread.JsapiTicketThread;
+import org.huzhu.weixin.weixinpay.common.RandomStringGenerator;
+import org.huzhu.weixin.weixinpay.common.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -201,23 +200,29 @@ public class WeixinUtil {
     public static Map<String, Object> getWxConfig(String requestUrl) {
         Map<String, Object> ret = new HashMap<String, Object>();
 
-        String jsapi_ticket = CommonUtil.getJsapiTicket().getTicket();
+        //String jsapi_ticket = CommonUtil.getJsapiTicket().getTicket();
+        String jsapi_ticket = JsapiTicketThread.jsapiTicket.getTicket();
         String timestamp = Long.toString(System.currentTimeMillis() / 1000); // 必填，生成签名的时间戳
-        String nonceStr = UUID.randomUUID().toString(); // 必填，生成签名的随机串
+        String nonceStr = RandomStringGenerator.getRandomStringByLength(16); // 必填，生成签名的随机串
 
-        String signature = "";
-        // 注意这里参数名必须全部小写，且必须有序
-        String sign = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + nonceStr+ "&timestamp=" + timestamp + "&url=" + requestUrl;
-        try {
-            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
-            crypt.reset();
-            crypt.update(sign.getBytes("UTF-8"));
-            signature = byteToHex(crypt.digest());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        TreeMap<String, Object> paramMap = new TreeMap<String, Object>();
+        paramMap.put("jsapi_ticket", jsapi_ticket);
+        paramMap.put("noncestr", nonceStr);
+        paramMap.put("timestamp", timestamp);
+        paramMap.put("url", requestUrl);
+        String signature = Signature.getSign(paramMap);
+//        // 注意这里参数名必须全部小写，且必须有序
+//        String sign = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + nonceStr+ "&timestamp=" + timestamp + "&url=" + requestUrl;
+//        try {
+//            MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+//            crypt.reset();
+//            crypt.update(sign.getBytes("UTF-8"));
+//            signature = byteToHex(crypt.digest());
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
         ret.put("appId", Constants.appId);
         ret.put("timestamp", timestamp);
         ret.put("nonceStr", nonceStr);
@@ -275,6 +280,14 @@ public class WeixinUtil {
         }
 
         return result;
+    }
+
+    public static void main(String[] args) {
+        String nonceStr = UUID.randomUUID().toString(); // 必填，生成签名的随机串
+        System.out.println("nonceStr: " + nonceStr + ", len: " + nonceStr.length());
+
+        nonceStr = RandomStringGenerator.getRandomStringByLength(32);
+        System.out.println("nonceStr: " + nonceStr + ", len: " + nonceStr.length());
     }
 
 }

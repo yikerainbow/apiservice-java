@@ -134,7 +134,7 @@ public class CommonUtil {
         JsapiTicket jsapiTicket = null;
 
         String accessToken = TokenThread.token.getAccessToken();
-        //String accessToken = "66SKXjySSyLlaDWXCbvIixzifkDEBkQ6h4ZsdOmKJDdfceMtWaXWy3yr4_9jAuMDpa-qnk3s1hHjEqKSvOQgPtVnuILG0AYjuOfnGfN7pxodmdRMoS4X2TibcLSSsQbZZJLjAIAISU";
+        //String accessToken = "eRKH_6iAhayr1BEo7K35dkfniqv4_6JlzUzOyYU_zPt9Bgv2kSiCbvaoot34qtbYEHfpQ5ojdXgE3JfbeqF66PsmN-JKozTvWG-l9WzdRYaSwvUzvhJdaJ1fxOY9WcJ_LGHjAIAOJK";
         String requestUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+ accessToken + "&type=jsapi";
         //发起GET请求获取凭证
         JSONObject jsonObject = httpsRequest(requestUrl, "GET", null);
@@ -192,8 +192,12 @@ public class CommonUtil {
     }
 
     public static void main(String[] args) {
-        JsapiTicket jsapiTicket = getJsapiTicket();
-        System.out.println("jsapiTicket.ticket: " + jsapiTicket.getTicket());
-        System.out.println("jsapiTicket.expires_in: " + jsapiTicket.getExpiresIn());
+        //JsapiTicket jsapiTicket = getJsapiTicket();
+        //System.out.println("jsapiTicket.ticket: " + jsapiTicket.getTicket());
+        //System.out.println("jsapiTicket.expires_in: " + jsapiTicket.getExpiresIn());
+
+        String accessToken = getToken(Constants.appId, Constants.appSecret).getAccessToken();
+        System.out.println("access_token: " + accessToken);
+
     }
 }

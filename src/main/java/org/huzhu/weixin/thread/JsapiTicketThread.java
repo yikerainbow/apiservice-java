@@ -19,6 +19,8 @@ public class JsapiTicketThread implements Runnable {
     public void run() {
         while (true) {
             try {
+                // 休眠5秒, 等待accessToken获取成功
+                Thread.sleep(5 * 1000);
                 jsapiTicket = CommonUtil.getJsapiTicket();
                 if (null != jsapiTicket) {
                     log.info("获取jsapi_ticket成功，有效时长{}秒 token:{}", jsapiTicket.getExpiresIn(), jsapiTicket.getTicket());

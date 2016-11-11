@@ -2,19 +2,14 @@ package org.huzhu.weixin.weixinpay.service;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.huzhu.commons.Constants;
-import org.huzhu.weixin.proj.WeixinOauth2Token;
-import org.huzhu.weixin.util.AdvancedUtil;
 import org.huzhu.weixin.weixinpay.common.Configure;
 import org.huzhu.weixin.weixinpay.common.HttpService;
-import org.huzhu.weixin.weixinpay.common.JsonUtil;
 import org.huzhu.weixin.weixinpay.common.XMLParser;
 import org.huzhu.weixin.weixinpay.protocol.UnifiedOrderReqData;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

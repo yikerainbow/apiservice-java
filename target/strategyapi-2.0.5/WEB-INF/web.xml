@@ -177,7 +177,7 @@
         <url-pattern>/weixin/access_token/get.json</url-pattern>
     </servlet-mapping>
 
-     <!-- 查询jsapi_ticket TODO-->
+     <!-- 查询jsapi_ticket-->
     <servlet>
         <servlet-name>WeixinJsapiTicketGetServlet</servlet-name>
         <servlet-class>org.huzhu.servlet.WeixinJsapiTicketGetServlet</servlet-class>

@@ -3,9 +3,9 @@ package org.huzhu.service;
 import cn.sina.api.commons.util.ApiLogger;
 import org.huzhu.weixin.util.WeixinUtil;
 import org.huzhu.weixin.weixinpay.common.Configure;
+import org.huzhu.weixin.weixinpay.common.RandomStringGenerator;
 import org.huzhu.weixin.weixinpay.common.Signature;
 import org.huzhu.weixin.weixinpay.common.XMLParser;
-import org.huzhu.weixin.weixinpay.notify.PayNotifyData;
 import org.huzhu.weixin.weixinpay.protocol.UnifiedOrderReqData;
 import org.huzhu.weixin.weixinpay.service.WxPayApi;
 
@@ -46,7 +46,7 @@ public class WeixinPayService {
         String tradeType = "JSAPI";
 
         // 设置package参数
-        SortedMap<String, String> packageParams = new TreeMap<String, String>();
+        SortedMap<String, Object> packageParams = new TreeMap<String, Object>();
         try {
             UnifiedOrderReqData reqData = new UnifiedOrderReqData.UnifiedOrderReqDataBuilder(appid, mch_id, body,
                     out_trade_no, total_fee, spbill_create_ip, notify_url, tradeType).setOpenid(openid).build();
@@ -60,7 +60,8 @@ public class WeixinPayService {
             }
 
             String timestamp = Long.toString(System.currentTimeMillis() / 1000); // 必填，生成签名的时间戳
-            String nonceStr = UUID.randomUUID().toString(); // 必填，生成签名的随机串
+            String nonceStr = RandomStringGenerator.getRandomStringByLength(16); // 必填，生成签名的随机串
+
             packageParams.put("appId", appid);
             packageParams.put("timeStamp", timestamp);
             packageParams.put("nonceStr", nonceStr);
@@ -91,28 +92,34 @@ public class WeixinPayService {
     public static String weixinPayCallback(InputStream is) {
         String resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>" + "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
 
+        if(is == null) {
+            ApiLogger.error("微信支付处理失败================\n" + resXml);
+            return  resXml;
+        }
         String notifyXml = WeixinUtil.inputStream2String(is, "UTF-8");
+        ApiLogger.debug("从微信获取回调数据 ================\n" + notifyXml);
 
-        PayNotifyData payNotifyData = XMLParser.getObjectFromXML(notifyXml, PayNotifyData.class);
-        ApiLogger.debug("从微信获取回调数据 ================\n" + payNotifyData.toString());
-        if(payNotifyData != null) {
-            if ("SUCCESS".equals(payNotifyData.getReturn_code().toUpperCase()) && "SUCCESS".equals(payNotifyData.getResult_code().toUpperCase())) {
-                try {
-                /*
-                 ** TODO, 业务逻辑处理
-                 */
+        try {
+            Map<String, Object> notifyMap = XMLParser.getMapFromXML(notifyXml);
+            if (notifyMap != null) {
+                String resultCode = notifyMap.get("result_code").toString();
+                String returnCode = notifyMap.get("return_code").toString();
+                if ("SUCCESS".equals(resultCode.toUpperCase()) && "SUCCESS".equals(returnCode.toUpperCase())) {
+                    /*
+                    ** TODO, 业务逻辑处理
+                    */
                     resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>" + "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
                     ApiLogger.debug("微信支付处理成功================\n" + resXml);
-                } catch (Exception e) {
-                    resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>" + "<return_msg><![CDATA[" + e.getMessage() + "]]></return_msg>" + "</xml> ";
-                    ApiLogger.debug("微信支付处理失败================\n" + resXml);
+                } else {
+                    resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>" + "<return_msg><![CDATA[FAIL]]></return_msg>" + "</xml> ";
+                    ApiLogger.error("微信支付处理失败================\n" + resXml);
                 }
-
             } else {
-                ApiLogger.debug("微信支付处理失败================\n" + resXml);
+                ApiLogger.error("微信支付处理失败================\n" + resXml);
             }
-        } else {
-            ApiLogger.debug("微信支付处理失败================\n" + resXml);
+        } catch (Exception e) {
+            resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>" + "<return_msg><![CDATA[" + e.getMessage() + "]]></return_msg>" + "</xml> ";
+            ApiLogger.error("微信支付处理失败================\n" + resXml);
         }
 
         return resXml;
