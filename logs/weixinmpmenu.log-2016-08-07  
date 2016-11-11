@@ -1,2 +1,0 @@
-[ERROR] 2016-08-07 17:27:24,966      org.huzhu.weixin.util.CommonUtil     - 获取jsapi_ticket失败 errcode:40001 errmsg:invalid credential, access_token is invalid or not latest hint: [OE11Ka0036vr18]
-  
