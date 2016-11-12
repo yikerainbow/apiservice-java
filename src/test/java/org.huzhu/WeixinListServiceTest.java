@@ -17,15 +17,18 @@ public class WeixinListServiceTest extends TestCase {
             ApplicationContext context = new ClassPathXmlApplicationContext(paths);
             WeixinListService weixinListService = (WeixinListService) context.getBean("weixinListService");
             //String result = JSON.toJSONString(new Result(weixinListService.getHuzhuMembers()));
-            //String openid = "2324235";
+            String openid = "ow5YYwoW2qSJAFfYnh95GfCG3pBI";
+            String personid = "420983198810021757";
+            String charge = "0.01";
             //String nickname = "weixin_name";
             //String mobile = "15007110889";
             //String vcode = "110213";
-            String code = "011zX5P800j6it1HOZN80WT4P80zX5PR";
+            //String code = "011zX5P800j6it1HOZN80WT4P80zX5PR";
             //String result = JSON.toJSONString(new Result(weixinListService.addVcodeList(openid, nickname, mobile)));
             //String result = JSON.toJSONString(new Result(weixinListService.isVerified(openid, mobile, vcode)));
             //String result = JSON.toJSONString(new Result(weixinListService.isRegistered(openid)));
-            String result = JSON.toJSONString(weixinListService.getSnsUserInfo(code));
+            //String result = JSON.toJSONString(weixinListService.getSnsUserInfo(code));
+            String result = JSON.toJSONString(new Result(weixinListService.updataMemberBalance(openid, personid, charge)));
 
 
             print("result: " + result);

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.DoubleArraySerializer;
 import org.huzhu.commons.Constants;
 import org.huzhu.commons.MessageVerifyApis;
 import org.huzhu.dao.WeixinListDao;
@@ -95,7 +96,7 @@ public class WeixinListService {
             //System.out.println("curTime: " + curTime);
 
             if (status == 0 && curTime - updateTime > 0 && curTime - updateTime <= 600) {
-                if (vcode.trim().endsWith(dbVcode.trim())) {
+                if (vcode.trim().equals(dbVcode.trim())) {
                     dao.updateRegisterStatus(openid, mobile);
                     verified = true;
                 }
@@ -159,5 +160,22 @@ public class WeixinListService {
 
     public WeixinListDao.MemberRow getMemberInfo(String personId) {
         return dao.queryMemberInfo(personId);
+    }
+
+    public boolean updataMemberBalance(String openid, String personid, String chargeStr) {
+        boolean ret = true;
+
+        double charge = Double.parseDouble(chargeStr);
+        try {
+            double dbBalance = dao.queryMemberInfo(personid).getBalance();
+            double balance = dbBalance + charge;
+            ret = dao.updateMemberBalance(openid, personid, balance);
+        } catch (Exception e) {
+            ApiLogger.error("charge failed: ", e);
+            ret = false;
+        }
+
+        return ret;
+
     }
 }

@@ -217,4 +217,14 @@
         <url-pattern>/weixin/notify_url</url-pattern>
     </servlet-mapping>
 
+     <!-- 会员充值 -->
+    <servlet>
+        <servlet-name>WeixinMemberChargeServlet</servlet-name>
+        <servlet-class>org.huzhu.servlet.WeixinMemberChargeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WeixinMemberChargeServlet</servlet-name>
+        <url-pattern>/huzhu/member_charge</url-pattern>
+    </servlet-mapping>
+
 </web-app>

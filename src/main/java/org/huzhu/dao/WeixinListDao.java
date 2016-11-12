@@ -121,6 +121,7 @@ public class WeixinListDao {
     private static final String SQL_INSERT_MEMBER_INFO = "INSERT INTO `"+DB_NAME+"`.`"+ MEMBER_TABLE_NAME +"` (`openid`, `nickname`, `personname`, `personid`, `balance`) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_QUERY_MEMBERS = "select `openid`, `nickname`, `personname`, `personid`, `balance`, `update` from `"+DB_NAME+"`.`"+ MEMBER_TABLE_NAME +"` where `openid` = ?";
     private static final String SQL_QUERY_MEMBER_INFO = "select `personname`, `personid`, `balance`, `update` from `"+DB_NAME+"`.`"+ MEMBER_TABLE_NAME +"` where `personid` = ?";
+    private static final String SQL_UPDATE_MEMBER_BALANCE = "update `"+DB_NAME+"`.`"+ MEMBER_TABLE_NAME +"` set `balance` = ? where `openid` = ? and `personid` = ?";
 
     private JdbcTemplate jt;
     public void setJdbcTemplate(JdbcTemplate jt) {
@@ -292,6 +293,25 @@ public class WeixinListDao {
             return list.get(0);
         } else {
             return null;
+        }
+    }
+
+    public Boolean updateMemberBalance(String openid, String personid, double balance) {
+        try {
+            long t1 = System.currentTimeMillis();
+            boolean ret =
+                    jt.update(SQL_UPDATE_MEMBER_BALANCE,
+                            new Object[]{balance, openid, personid}) > 0;
+
+            long t2 = System.currentTimeMillis();
+            long t = t2 - t1;
+            if (t > Constants.OP_DB_TIMEOUT) {
+                ApiLogger.warn(new StringBuilder(64).append("").toString());//TODO
+            }
+            return ret;
+        } catch (RuntimeException e) {
+            ApiLogger.error(new StringBuilder(128).append("").toString());//TODO
+            throw e;
         }
     }
 
